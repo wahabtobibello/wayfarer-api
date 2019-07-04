@@ -60,4 +60,8 @@ typings/
 # next.js build output
 .next
 
+# WebStorm config folder
 .idea
+
+# build folder
+dist

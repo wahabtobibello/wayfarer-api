@@ -3,16 +3,24 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "test": "mocha"
+    "start:dev": "DEBUG=wayfarer-api:*  nodemon --exec npm run babel-node -- ./app",
+    "start": "npm run build && DEBUG=wayfarer-api:* node ./dist/app",
+    "test": "mocha",
+    "babel-node": "babel-node --presets=@babel/env",
+    "build": "babel ./src -d dist --ignore node_modules"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^8.0.0",
     "express": "~4.16.1",
     "morgan": "~1.9.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/cli": "^7.4.4",
+    "@babel/node": "^7.4.5",
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
