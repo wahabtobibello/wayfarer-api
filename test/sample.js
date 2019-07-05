@@ -14,8 +14,7 @@ describe('Server', () => {
         should.not.exist(err);
         res.should.have.status(200);
         res.body.should.have.property('data');
-        res.body.should.have.property('status', 200);
-        res.body.data.should.have.property('message', 'Hello World');
+        res.body.should.have.property('status', 'success');
         done();
       });
   });
