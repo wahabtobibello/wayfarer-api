@@ -85,8 +85,10 @@ const onListening = () => {
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+if (!module.parent) {
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
+}
 
 export default server;

@@ -6,7 +6,8 @@
     "build": "babel ./src -d dist --ignore node_modules",
     "dev": "DEBUG=wayfarer-api:* nodemon --exec babel-node --presets=@babel/env -- src/server",
     "start": "npm run build && DEBUG=wayfarer-api:* node dist/server",
-    "test": "mocha --require @babel/polyfill --require @babel/register"
+    "test": "mocha --require @babel/polyfill --require @babel/register",
+    "test:watch": "mocha --require @babel/polyfill --require @babel/register --watch"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
