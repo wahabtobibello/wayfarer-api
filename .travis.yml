@@ -13,6 +13,8 @@ before_script:
   - ./cc-test-reporter before-build
   - psql -U postgres -c 'create database wayfarer_db;'
   - psql -U postgres -d wayfarer_db -a -f ./schema.sql
-script: npm run coverage
+script:
+  - npm run build
+  - npm run coverage
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
