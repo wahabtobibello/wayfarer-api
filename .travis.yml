@@ -5,14 +5,14 @@ services:
 env:
   global:
     - CC_TEST_REPORTER_ID=5306536ea102f8069b6c6ad48d58798212207c6e6dc228ec66f6311fb8420d4e
-    - DATABASE_URL=postgres://tobibello001@localhost:5432/wayfarer_db
+    - DATABASE_URL=postgres://postgres@localhost:5432/wayfarer_db
     - JWT_SECRET=ac9ca94cay9a3cnac3llo4ob49895cglbwlooqboavai3ab39b3a
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
-  - sudo psql -U postgres -c 'create database wayfarer_db;'
-  - sudo psql -U postgres -d wayfarer_db -a -f ./schema.sql
+  - psql -U postgres -c 'create database wayfarer_db;'
+  - psql -U postgres -d wayfarer_db -a -f ./schema.sql
 script: npm run coverage
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
