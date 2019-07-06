@@ -11,7 +11,6 @@ describe('Server', () => {
     chai.request(server)
       .get('/api/v1')
       .end((err, res) => {
-        should.not.exist(err);
         res.should.have.status(200);
         res.body.should.have.property('data');
         res.body.should.have.property('status', 'success');
