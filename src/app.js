@@ -1,4 +1,4 @@
-import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 import { config as configureEnv } from 'dotenv';
 import express from 'express';
 import logger from 'morgan';
@@ -14,7 +14,8 @@ const app = express();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use('/api/v1', apiRouter);
