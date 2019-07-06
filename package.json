@@ -1,6 +1,6 @@
 {
   "name": "wayfarer-api",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha.1",
   "private": true,
   "scripts": {
     "build": "babel ./src -d dist && npm run docs",
@@ -8,12 +8,12 @@
     "dev": "DEBUG=wayfarer-api:* nodemon --exec babel-node --presets=@babel/env -- src/server",
     "docs": "snowboard html -o public/index.html documentation.apib",
     "start": "DEBUG=wayfarer-api:* node dist/server",
-    "test": "mocha --require @babel/polyfill --require @babel/register",
-    "test:watch": "mocha --require @babel/polyfill --require @babel/register --watch"
+    "test": "mocha --require @babel/polyfill --require @babel/register --recursive",
+    "test:watch": "mocha --require @babel/polyfill --require @babel/register --watch --recursive"
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
-    "cookie-parser": "~1.4.4",
+    "body-parser": "^1.19.0",
     "debug": "~2.6.9",
     "dotenv": "^8.0.0",
     "express": "~4.16.1",
@@ -30,6 +30,7 @@
     "@babel/register": "^7.4.4",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "chance": "^1.0.18",
     "coveralls": "^3.0.4",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
