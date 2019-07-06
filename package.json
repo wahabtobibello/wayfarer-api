@@ -12,10 +12,12 @@
     "test:watch": "mocha --require @babel/polyfill --require @babel/register --watch"
   },
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.0.0",
     "express": "~4.16.1",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.1",
     "pg": "^7.11.0"
   },
