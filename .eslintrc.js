@@ -11,7 +11,9 @@ module.exports = {
     SharedArrayBuffer: 'readonly',
     describe: false,
     it: false,
+    context: false,
     log: false,
+    db: false,
   },
   parserOptions: {
     ecmaVersion: 2018,
