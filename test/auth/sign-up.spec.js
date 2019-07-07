@@ -78,7 +78,65 @@ describe('POST /api/v1/auth/signup', function () {
         });
       newRes.should.have.status(400);
       newRes.body.should.have.property('status', SQLErrorCodes.unique_violation.name);
-      newRes.body.should.have.property('error');
+      newRes.body.error.should.be.a('string');
     }));
-  it('should return 400 if required fields are blank or undefined');
+  context('when required fields are blank or undefined', () => {
+    const testField = async (field) => {
+      const fields = {
+        first_name: chance.first(),
+        last_name: chance.last(),
+        password: chance.string(),
+        email: chance.email(),
+      };
+      let testFields = { ...fields };
+      delete testFields[field];
+      let res = await chai.request(server)
+        .post(signUpRoute)
+        .send(testFields);
+      res.should.have.status(400);
+      res.body.should.have.property('status', SQLErrorCodes.not_null_violation.name);
+      res.body.error.should.be.a('string');
+
+      testFields = { ...fields };
+      testFields[field] = typeof testFields[field] === 'string' ? '' : 0;
+      res = await chai.request(server)
+        .post(signUpRoute)
+        .send(testFields);
+      res.should.have.status(400);
+      res.body.should.have.property('status', SQLErrorCodes.not_null_violation.name);
+      res.body.error.should.be.a('string');
+    };
+    it('should return 400 if first_name are blank or undefined',
+      function (done) {
+        testField('first_name')
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    it('should return 400 if last_name are blank or undefined',
+      function (done) {
+        testField('last_name')
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    it('should return 400 if email are blank or undefined',
+      function (done) {
+        testField('email')
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+    it('should return 400 if password are blank or undefined',
+      function (done) {
+        testField('password')
+          .then(() => {
+            done();
+          })
+          .catch(done);
+      });
+  });
 });
