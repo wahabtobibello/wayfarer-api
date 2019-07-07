@@ -45,12 +45,12 @@ router.route('/auth/signup')
               resErr.error = err.detail;
               break;
             default:
-              next(err);
+              return next(err);
           }
           return res.status(400)
             .json(resErr);
         }
-        next(err);
+        return next(err);
       }
       const { id, is_admin: isAdmin } = record;
       const token = jwt.sign({ user_id: id }, process.env.JWT_SECRET);
