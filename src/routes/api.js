@@ -1,25 +1,12 @@
 import bcrypt from 'bcrypt';
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
-import { asyncHelper, SQLErrorCodes } from '../helpers';
+import { asyncHelper, required, SQLErrorCodes } from '../helpers';
 
 const router = Router();
 
-const validation = fields => (req, res, next) => {
-  for (let i = 0; i < fields.length; i += 1) {
-    if (!req.body[fields[i]]) {
-      return res.status(400)
-        .json({
-          status: SQLErrorCodes.not_null_violation.name,
-          error: `Field "${fields[i]}" is required`,
-        });
-    }
-  }
-  next();
-};
-
 router.route('/auth/signup')
-  .post(validation(['first_name', 'last_name', 'password', 'email']),
+  .post(required(['first_name', 'last_name', 'password', 'email']),
     asyncHelper(async (req, res, next) => {
       const {
         first_name, last_name, password, email,
@@ -54,7 +41,7 @@ router.route('/auth/signup')
       }
       const { id, is_admin: isAdmin } = record;
       const token = jwt.sign({ user_id: id }, process.env.JWT_SECRET);
-      res.status(201)
+      return res.status(201)
         .json({
           status: 'success',
           data: {
