@@ -1,20 +1,40 @@
 import bcrypt from 'bcrypt';
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
-import { asyncHelper } from '../helpers';
+import { asyncHelper, SQLErrorCodes } from '../helpers';
 
 const router = Router();
 
 router.route('/auth/signup')
-  .post(asyncHelper(async (req, res) => {
+  .post(asyncHelper(async (req, res, next) => {
     const {
-      firstName, lastName, email, password,
+      first_name, last_name, password, email,
     } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const { rows: [{ id, is_admin: isAdmin }] } = await db.query(
-      'INSERT INTO "user"(first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id, is_admin;',
-      [firstName, lastName, email, hashedPassword],
-    );
+    let record;
+    try {
+      ({ rows: [record] } = await db.query(
+        'INSERT INTO "user"(first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *;',
+        [first_name, last_name, email, hashedPassword],
+      ));
+    } catch (err) {
+      // Check if error is due to integrity constraint violation
+      if (err.code.substring(0, 2) === '23') {
+        const resErr = {};
+        switch (err.code) {
+          case SQLErrorCodes.unique_violation.code:
+            resErr.status = SQLErrorCodes.unique_violation.name;
+            resErr.error = err.detail;
+            break;
+          default:
+            next(err);
+        }
+        return res.status(400)
+          .json(resErr);
+      }
+      next(err);
+    }
+    const { id, is_admin: isAdmin } = record;
     const token = jwt.sign({ user_id: id }, process.env.JWT_SECRET);
     res.status(201)
       .json({

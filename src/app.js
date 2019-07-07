@@ -5,9 +5,9 @@ import logger from 'morgan';
 import path from 'path';
 
 import setGlobals from './config/globals';
+import apiRouter from './routes/api';
 
 import indexRouter from './routes/index';
-import apiRouter from './routes/api';
 
 configureEnv();
 setGlobals();
@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.use('/api/v1', apiRouter);
 app.use('/', indexRouter);
+app.use('/api/v1', apiRouter);
 
 export default app;
