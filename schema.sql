@@ -43,13 +43,3 @@ CREATE TABLE booking (
     created_on DATE NOT NULL DEFAULT CURRENT_DATE,
     is_deleted BOOLEAN DEFAULT FALSE
 );
-
-INSERT INTO "user" (first_name, last_name, email, password, is_admin) VALUES ('John', 'Doe', 'foo@bar.co', 'password', TRUE);
-INSERT INTO bus (number_plate, manufacturer, model, year) VALUES ('JAFKDFE', 'Honda', 'X65', '2017');
-INSERT INTO trip (bus_id, origin, destination, trip_date, fare) VALUES (1, 'Lagos', 'Abuja', '2017-08-28', 2500);
-INSERT INTO booking (trip_id, user_id) VALUES (1, 1);
-
-SELECT * FROM "user";
-SELECT * FROM "bus";
-SELECT * FROM "trip";
-SELECT * FROM "booking";
