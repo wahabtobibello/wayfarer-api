@@ -7,21 +7,16 @@ import jwt from 'jsonwebtoken';
 import { SQLErrorCodes } from '../../src/helpers';
 
 import server from '../../src/server';
+import { mochaAsyncHelper } from '../helpers';
 
 chai.use(chaiHttp);
 chai.should();
 const chance = Chance();
 const signUpRoute = '/api/v1/auth/signup';
 
-const mochaAsync = fn => function (done) {
-  fn()
-    .then(() => { done(); })
-    .catch(done);
-};
-
 describe('POST /api/v1/auth/signup', function () {
   it('should return valid token payload when all fields are provided and valid',
-    mochaAsync(async function () {
+    mochaAsyncHelper(async function () {
       const validFields = {
         first_name: chance.first(),
         last_name: chance.last(),
@@ -51,7 +46,7 @@ describe('POST /api/v1/auth/signup', function () {
       isSame.should.eq(true);
     }));
   it('should return a 400 if user with email already exists',
-    mochaAsync(async function () {
+    mochaAsyncHelper(async function () {
       const email = chance.email();
       const fields = {
         first_name: chance.first(),
