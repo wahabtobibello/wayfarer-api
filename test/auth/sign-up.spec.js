@@ -5,6 +5,7 @@ import chaiHttp from 'chai-http';
 import Chance from 'chance';
 import jwt from 'jsonwebtoken';
 import { SQLErrorCodes } from '../../src/helpers';
+import User from '../../src/models/User';
 
 import server from '../../src/server';
 import { mochaAsyncHelper } from '../helpers';
@@ -33,8 +34,7 @@ describe('POST /api/v1/auth/signup', function () {
       res.body.data.should.have.property('user_id');
       res.body.data.should.have.property('token');
       res.body.data.should.have.property('is_admin');
-      const { rows: [record] } = await db.query('SELECT * from "user" WHERE id=$1',
-        [res.body.data.user_id]);
+      const record = await User.findOneById(res.body.data.user_id);
       record.should.have.property('id', res.body.data.user_id);
       record.should.have.property('is_admin', res.body.data.is_admin);
       const payload = jwt.verify(res.body.data.token, process.env.JWT_SECRET);
