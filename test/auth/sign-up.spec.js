@@ -9,6 +9,7 @@ import User from '../../src/models/User';
 
 import server from '../../src/server';
 import { mochaAsyncHelper } from '../helpers';
+import { assertPassword } from '../helpers/assertions';
 
 chai.use(chaiHttp);
 chai.should();
@@ -42,8 +43,7 @@ describe('POST /api/v1/auth/signup', function () {
       record.should.have.property('first_name', validFields.first_name);
       record.should.have.property('last_name', validFields.last_name);
       record.should.have.property('email', validFields.email);
-      const isSame = await bcrypt.compare(validFields.password, record.password);
-      isSame.should.eq(true);
+      await assertPassword(validFields.password, record.password);
     }));
   it('should return a 400 if user with email already exists',
     mochaAsyncHelper(async function () {
