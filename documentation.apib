@@ -44,3 +44,31 @@ Sign up a new user.
                     "is_admin": false
                 },
         }
+
+## Sign In [/auth/signin]
+
+### Sign In User [POST]
+
++ Request (application/json)
+
+    + Body
+
+        {
+            "email": "foo@bar.co",
+            "password": "_P@ssw0rd_",
+        }
+
+
++ Response 201 (application/json)
+
+    + Body
+
+        {
+            "status": "success",
+            "data":
+                {
+                    "user_id": 1,
+                    "token": "faniuq8rq29nq92nfqio2jfn2uf29fu2209fn20qojf2q9u2o",
+                    "is_admin": false
+                },
+        }

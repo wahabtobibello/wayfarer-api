@@ -5,23 +5,20 @@ import chaiHttp from 'chai-http';
 import Chance from 'chance';
 import jwt from 'jsonwebtoken';
 import { SQLErrorCodes } from '../../src/helpers';
+import User from '../../src/models/User';
 
 import server from '../../src/server';
+import { mochaAsyncHelper } from '../helpers';
+import { assertPassword } from '../helpers/assertions';
 
 chai.use(chaiHttp);
 chai.should();
 const chance = Chance();
 const signUpRoute = '/api/v1/auth/signup';
 
-const mochaAsync = fn => function (done) {
-  fn()
-    .then(() => { done(); })
-    .catch(done);
-};
-
 describe('POST /api/v1/auth/signup', function () {
   it('should return valid token payload when all fields are provided and valid',
-    mochaAsync(async function () {
+    mochaAsyncHelper(async function () {
       const validFields = {
         first_name: chance.first(),
         last_name: chance.last(),
@@ -38,8 +35,7 @@ describe('POST /api/v1/auth/signup', function () {
       res.body.data.should.have.property('user_id');
       res.body.data.should.have.property('token');
       res.body.data.should.have.property('is_admin');
-      const { rows: [record] } = await db.query('SELECT * from "user" WHERE id=$1',
-        [res.body.data.user_id]);
+      const record = await User.findOneById(res.body.data.user_id);
       record.should.have.property('id', res.body.data.user_id);
       record.should.have.property('is_admin', res.body.data.is_admin);
       const payload = jwt.verify(res.body.data.token, process.env.JWT_SECRET);
@@ -47,11 +43,10 @@ describe('POST /api/v1/auth/signup', function () {
       record.should.have.property('first_name', validFields.first_name);
       record.should.have.property('last_name', validFields.last_name);
       record.should.have.property('email', validFields.email);
-      const isSame = await bcrypt.compare(validFields.password, record.password);
-      isSame.should.eq(true);
+      await assertPassword(validFields.password, record.password);
     }));
   it('should return a 400 if user with email already exists',
-    mochaAsync(async function () {
+    mochaAsyncHelper(async function () {
       const email = chance.email();
       const fields = {
         first_name: chance.first(),
