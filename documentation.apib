@@ -49,6 +49,11 @@ Sign up a new user.
 
 ### Sign In User [POST]
 
+Sign in a new user.
+
++ email (string) - User's email (required, unique).
++ password (string) - User's password (required).
+
 + Request (application/json)
 
     + Body
@@ -70,5 +75,48 @@ Sign up a new user.
                     "user_id": 1,
                     "token": "faniuq8rq29nq92nfqio2jfn2uf29fu2209fn20qojf2q9u2o",
                     "is_admin": false
+                },
+        }
+
+# Group Authentication
+
+## Trip [/trips]
+
+### Create a trip [POST]
+
+Create a trip
+
++ bus_id (id) - bus for the trip (required).
++ origin (string) - City the journey starts from (required).
++ destination (string) - City the journey ends (required).
++ trip_date (date) - The date the trip will begin (required).
++ fare (float) - Price of trip (required).
+
++ Request (application/json)
+
+    + Body
+
+        {
+            "bus_id": 3
+            "origin": "abuja"
+            "destination": "lagos"
+            "trip_date": "2019-12-21T00:00:00.000Z"
+            "fare": "2000.00"
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+        {
+            "status": "success",
+            "data":
+                {
+                    "id": 3
+                    "bus_id": 3
+                    "origin": "abuja"
+                    "destination": "lagos"
+                    "trip_date": "2019-12-21T00:00:00.000Z"
+                    "fare": "2000.00"
                 },
         }
