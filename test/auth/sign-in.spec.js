@@ -15,7 +15,7 @@ const chance = Chance();
 const signUpRoute = '/api/v1/auth/signup';
 const signInRoute = '/api/v1/auth/signin';
 
-describe.only('POST /api/v1/auth/signin', () => {
+describe('POST /api/v1/auth/signin', () => {
   const validFields = {
     first_name: chance.first(),
     last_name: chance.last(),

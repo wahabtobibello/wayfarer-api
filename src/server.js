@@ -1,82 +1,33 @@
-import http from 'http';
+import bodyParser from 'body-parser';
+import { config as configureEnv } from 'dotenv';
+import express from 'express';
+import logger from 'morgan';
+import path from 'path';
 
-import app from './app';
+import setGlobals from './config/globals';
+import apiRouter from './routes/api';
 
-/**
- * Normalize a port into a number, string, or false.
- */
-const normalizePort = (value) => {
-  const port = parseInt(value, 10);
+import indexRouter from './routes/index';
 
-  if (Number.isNaN(port)) {
-    // named pipe
-    return value;
-  }
+configureEnv();
+setGlobals();
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
+const app = express();
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
-  return false;
-};
+app.use('/', indexRouter);
+app.use('/api/v1', apiRouter);
 
-/**
- * Get port from environment and store in Express.
- */
-const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-const server = http.createServer(app);
-
-/**
- * Event listener for HTTP server "error" event.
- */
-const onError = (error) => {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  const bind = typeof port === 'string'
-    ? `Pipe ${port}`
-    : `Port ${port}`;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(`${bind} requires elevated privileges`);
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(`${bind} is already in use`);
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-};
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-const onListening = () => {
-  const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? `pipe ${addr}`
-    : `port ${addr.port}`;
-  log(`Listening on ${bind}`);
-};
-
-/**
- * Listen on provided port, on all network interfaces.
- */
 if (!module.parent) {
-  server.listen(port);
-  server.on('error', onError);
-  server.on('listening', onListening);
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    log(`Listening on port ${port}`);
+  });
 }
 
-export default server;
+export default app;
