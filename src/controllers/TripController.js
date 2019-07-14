@@ -13,6 +13,18 @@ export default class TripController {
       bus_id,
     });
     return res.status(201)
-      .json(record);
+      .json({
+        status: 'success',
+        data: record,
+      });
+  }
+
+  static async fetch(req, res) {
+    const records = await Trip.findAll();
+    return res.status(200)
+      .json({
+        status: 'success',
+        data: records,
+      });
   }
 }

@@ -14,6 +14,8 @@ router.route('/auth/signin')
     asyncHelper(AuthController.signIn));
 
 router.route('/trips')
-  .post(asyncHelper(TripController.create));
+  .post(required(['bus_id', 'fare', 'origin', 'destination', 'trip_date']),
+    asyncHelper(TripController.create))
+  .get(asyncHelper(TripController.fetch));
 
 export default router;

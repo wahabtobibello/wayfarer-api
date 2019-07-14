@@ -26,6 +26,11 @@ export default (table, fields) => class Model {
     return rows[0];
   }
 
+  static async findAll() {
+    const { rows } = await db.query(`SELECT * from "${table}"`);
+    return rows;
+  }
+
   // static async count() {
   //   const { rows: [{ count }] } = await db.query(`SELECT COUNT(*) FROM "${table}"`);
   //   return count;
