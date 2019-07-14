@@ -21,17 +21,32 @@ describe('Trip', () => {
         .post('/api/v1/trips')
         .send(input);
       res.should.have.status(201);
-      res.body.should.have.property('id');
-      const record = await Trip.findOneById(res.body.id);
-      res.body.bus_id.should.be.eq(record.bus_id);
-      res.body.origin.should.be.eq(record.origin);
-      res.body.destination.should.be.eq(record.destination);
-      res.body.trip_date.should.be.eq(new Date(record.trip_date).toISOString());
-      res.body.fare.should.be.eq(record.fare);
+      res.body.should.have.property('status', 'success');
+      res.body.data.should.have.property('id');
+      const record = await Trip.findOneById(res.body.data.id);
+      res.body.data.bus_id.should.be.eq(record.bus_id);
+      res.body.data.origin.should.be.eq(record.origin);
+      res.body.data.destination.should.be.eq(record.destination);
+      res.body.data.trip_date.should.be.eq(new Date(record.trip_date).toISOString());
+      res.body.data.fare.should.be.eq(record.fare);
     }));
     it('should only accept bus_id that exist in the system');
     it('should not accept origin and destination that are the same');
     it('should not accept trip_date that are in the past');
     it('should only accept fare values greater than 0');
+  });
+  describe('GET /trips', () => {
+    it('should return a list of trips', mochaAsyncHelper(async () => {
+      const res = await chai.request(server)
+        .get('/api/v1/trips');
+      res.should.have.status(200);
+      res.body.should.have.property('status', 'success');
+      res.body.data.should.be.an('array');
+      const records = await Trip.findAll();
+      res.body.data.should.be.deep.eq(records.map(record => ({
+        ...record,
+        trip_date: new Date(record.trip_date).toISOString(),
+      })));
+    }));
   });
 });
