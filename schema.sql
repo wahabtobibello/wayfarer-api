@@ -30,7 +30,7 @@ CREATE TABLE trip (
     bus_id INTEGER NOT NULL REFERENCES bus(id),
     origin VARCHAR NOT NULL,
     destination VARCHAR NOT NULL,
-    trip_date DATE NOT NULL CHECK trip_date >= NOW(),
+    trip_date DATE NOT NULL CHECK (trip_date >= NOW()),
     fare FLOAT(2) NOT NULL,
     status trip_status DEFAULT 'active',
     is_deleted BOOLEAN DEFAULT FALSE
