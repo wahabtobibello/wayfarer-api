@@ -16,11 +16,11 @@ CREATE TABLE "user" (
 
 CREATE TABLE bus (
     id SERIAL PRIMARY KEY,
-    number_plate VARCHAR NOT NULL,
+    number_plate VARCHAR NOT NULL UNIQUE,
     manufacturer VARCHAR NOT NULL,
     model VARCHAR NOT NULL,
     year VARCHAR NOT NULL,
-    ​capacity  INTEGER DEFAULT 0,
+    capacity INTEGER NOT NULL,
     is_deleted BOOLEAN DEFAULT FALSE
 );
 
@@ -30,7 +30,7 @@ CREATE TABLE trip (
     bus_id INTEGER NOT NULL REFERENCES bus(id),
     origin VARCHAR NOT NULL,
     destination VARCHAR NOT NULL,
-    trip_date DATE NOT NULL,
+    trip_date DATE NOT NULL CHECK trip_date >= NOW(),
     fare FLOAT(2) NOT NULL,
     status trip_status DEFAULT 'active',
     is_deleted BOOLEAN DEFAULT FALSE
@@ -43,3 +43,12 @@ CREATE TABLE booking (
     created_on DATE NOT NULL DEFAULT CURRENT_DATE,
     is_deleted BOOLEAN DEFAULT FALSE
 );
+
+INSERT INTO "user" (email, first_name, last_name, password, is_admin)
+VALUES ('wahaaabello@gmail.com', 'Wahab', 'Bello', '$2b$10$BQrt/v8O73f1qn6RycQRRe6ijNILiUdddPXYFoPPjhqcqtJNX/0Ha', TRUE);
+
+INSERT INTO "bus" (number_plate, manufacturer, model, year, capacity)
+VALUES ('BA.987PA', 'Toyota', 'HiAce', '2016', 12),
+('AF.434ER', 'Toyota', 'Hummer', '2014', 12),
+('EF.952HW', 'Toyota', 'HiAce', '2012', 16),
+('QG.582HQ', 'Toyota', 'Hummer', '2010', 16);
