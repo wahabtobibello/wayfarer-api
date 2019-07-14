@@ -120,3 +120,31 @@ Create a trip
                     "fare": "2000.00"
                 },
         }
+
+### Get all trips [POST]
+
++ Response 201 (application/json)
+
+    + Body
+
+        {
+            "status": "success",
+            "data": [
+                    {
+                        "id": 1
+                        "bus_id": 3
+                        "origin": "abuja"
+                        "destination": "lagos"
+                        "trip_date": "2019-12-21T00:00:00.000Z"
+                        "fare": "2000.00"
+                    },
+                     {
+                            "id": 1
+                            "bus_id": 3
+                            "origin": "abuja"
+                            "destination": "lagos"
+                            "trip_date": "2019-12-21T00:00:00.000Z"
+                            "fare": "2000.00"
+                     },
+                ]
+        }
