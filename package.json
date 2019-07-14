@@ -5,7 +5,7 @@
   "scripts": {
     "build": "babel ./src -d dist && npm run docs",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
-    "dev": "DEBUG=wayfarer-api:* nodemon --exec babel-node --presets=@babel/env -- src/server",
+    "dev": "DEBUG=wayfarer-api:* nodemon --exec babel-node --presets=@babel/env --plugins=@babel/plugin-proposal-class-properties -- src/server",
     "docs": "snowboard html -o public/index.html documentation.apib",
     "start": "DEBUG=wayfarer-api:* node dist/server",
     "test": "mocha --require @babel/polyfill --require @babel/register --recursive",
@@ -27,6 +27,7 @@
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.4",
