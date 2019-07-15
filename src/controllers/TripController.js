@@ -27,4 +27,9 @@ export default class TripController {
         data: records,
       });
   }
+
+  static async cancel(req, res) {
+    return res.status(501)
+      .json({});
+  }
 }

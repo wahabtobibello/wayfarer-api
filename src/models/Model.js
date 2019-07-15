@@ -27,7 +27,7 @@ export default (table, fields) => class Model {
   }
 
   static async findAll() {
-    const { rows } = await db.query(`SELECT * from "${table}"`);
+    const { rows } = await db.query(`SELECT * from "${table}" WHERE is_deleted != TRUE`);
     return rows;
   }
 
