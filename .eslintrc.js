@@ -14,6 +14,7 @@ module.exports = {
     context: false,
     log: false,
     db: false,
+    before: false,
   },
   parserOptions: {
     ecmaVersion: 2018,

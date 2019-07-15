@@ -7,7 +7,16 @@ import { mochaAsyncHelper } from './helpers';
 chai.use(chaiHttp);
 chai.should();
 
-describe('Trip', () => {
+describe('Trip', function () {
+  before(async () => {
+    const res = await chai.request(server)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'wahaaabello@gmail.com',
+        password: '_P@ssw0rd_',
+      });
+    this.token = res.body.data.token;
+  });
   describe('POST /trips', () => {
     it('should create a trip successfully', mochaAsyncHelper(async () => {
       const input = {
@@ -19,6 +28,7 @@ describe('Trip', () => {
       };
       const res = await chai.request(server)
         .post('/api/v1/trips')
+        .set('authorization', this.token)
         .send(input);
       res.should.have.status(201);
       res.body.should.have.property('status', 'success');
@@ -30,6 +40,7 @@ describe('Trip', () => {
       res.body.data.trip_date.should.be.eq(new Date(record.trip_date).toISOString());
       res.body.data.fare.should.be.eq(record.fare);
     }));
+    it('should only allow admin users to use endpoint');
     it('should only accept bus_id that exist in the system');
     it('should not accept origin and destination that are the same');
     it('should not accept trip_date that are in the past');
@@ -38,7 +49,8 @@ describe('Trip', () => {
   describe('GET /trips', () => {
     it('should return a list of trips', mochaAsyncHelper(async () => {
       const res = await chai.request(server)
-        .get('/api/v1/trips');
+        .get('/api/v1/trips')
+        .set('authorization', this.token);
       res.should.have.status(200);
       res.body.should.have.property('status', 'success');
       res.body.data.should.be.an('array');
