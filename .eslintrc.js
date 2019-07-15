@@ -22,5 +22,6 @@ module.exports = {
   },
   rules: {
     camelcase: 'off',
+    'prefer-arrow-callback': 'off',
   },
 };
