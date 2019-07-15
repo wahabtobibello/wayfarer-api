@@ -3,19 +3,14 @@ import chaiHttp from 'chai-http';
 import Trip from '../src/models/Trip';
 import server from '../src/server';
 import { mochaAsyncHelper } from './helpers';
+import { adminLogin } from './helpers/commands';
 
 chai.use(chaiHttp);
 chai.should();
 
 describe('Trip', function () {
   before(async () => {
-    const res = await chai.request(server)
-      .post('/api/v1/auth/signin')
-      .send({
-        email: 'wahaaabello@gmail.com',
-        password: '_P@ssw0rd_',
-      });
-    this.token = res.body.data.token;
+    this.token = await adminLogin();
   });
   describe('POST /trips', () => {
     it('should create a trip successfully', mochaAsyncHelper(async () => {
@@ -60,5 +55,8 @@ describe('Trip', function () {
         trip_date: new Date(record.trip_date).toISOString(),
       })));
     }));
+  });
+  describe('PATCH /trips/:tripId', function () {
+
   });
 });
