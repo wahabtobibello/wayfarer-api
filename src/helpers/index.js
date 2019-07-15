@@ -30,16 +30,3 @@ export const SQLErrorCodes = {
     code: '23P01',
   },
 };
-
-export const required = fields => (req, res, next) => {
-  for (let i = 0; i < fields.length; i += 1) {
-    if (!req.body[fields[i]]) {
-      return res.status(400)
-        .json({
-          status: SQLErrorCodes.not_null_violation.name,
-          error: `Field "${fields[i]}" is required`,
-        });
-    }
-  }
-  return next();
-};

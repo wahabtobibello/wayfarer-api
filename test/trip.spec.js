@@ -30,6 +30,7 @@ describe('Trip', () => {
       res.body.data.trip_date.should.be.eq(new Date(record.trip_date).toISOString());
       res.body.data.fare.should.be.eq(record.fare);
     }));
+    it('should only allow admin users to use endpoint');
     it('should only accept bus_id that exist in the system');
     it('should not accept origin and destination that are the same');
     it('should not accept trip_date that are in the past');
