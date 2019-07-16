@@ -32,8 +32,8 @@ export default (table, fields) => class Model {
       values.push(value);
     }
     const { rows } = await db.query(
-      `SELECT * from "${table}" WHERE is_deleted != TRUE${field && value
-        ? ` AND ${field} = $1`
+      `SELECT * from "${table}" ${field && value
+        ? `WHERE ${field} = $1`
         : ''}`, values,
     );
     return rows;
