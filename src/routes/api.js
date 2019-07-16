@@ -24,7 +24,7 @@ router.route('/trips/:tripId')
   .patch(authenticated, admin, asyncHelper(TripController.cancel));
 
 router.route('/bookings')
-  .post(authenticated, required(['user_id', 'trip_id']),
+  .post(authenticated, required(['trip_id']),
     asyncHelper(BookingController.create))
   .get(authenticated, asyncHelper(BookingController.fetch));
 
