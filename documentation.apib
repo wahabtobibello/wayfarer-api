@@ -78,7 +78,7 @@ Sign in a new user.
                 },
         }
 
-# Group Authentication
+# Group Trip
 
 ## Trip [/trips]
 
@@ -147,4 +147,55 @@ Create a trip
                             "fare": "2000.00"
                      },
                 ]
+        }
+
+# Group Booking
+
+## Trip [/bookings]
+
+### Book a trip [POST]
+
++ trip_id (id) - bus for the trip (required).
+
++ Request (application/json)
+
+    + Body
+
+        {
+            "trip_id": 3
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+        {
+            "status": "success",
+            "data":
+                {
+                    "id": 3
+                    "trip_id": 3
+                    "user_id": "abuja"
+                    ...
+                },
+        }
+
+### Get all bookings [GET]
+
++ Response 201 (application/json)
+
+    + Body
+
+        {
+            "status": "success",
+            "data":
+                [
+                    {
+                        "id": 3
+                        "trip_id": 3
+                        "user_id": "abuja"
+                        ...
+                    }
+                    ...
+                ],
         }

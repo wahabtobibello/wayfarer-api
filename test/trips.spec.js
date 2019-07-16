@@ -3,19 +3,15 @@ import chaiHttp from 'chai-http';
 import Trip from '../src/models/Trip';
 import server from '../src/server';
 import { mochaAsyncHelper } from './helpers';
+import { adminLogin } from './helpers/commands';
 
 chai.use(chaiHttp);
 chai.should();
 
 describe('Trip', function () {
+  const self = this;
   before(async () => {
-    const res = await chai.request(server)
-      .post('/api/v1/auth/signin')
-      .send({
-        email: 'wahaaabello@gmail.com',
-        password: '_P@ssw0rd_',
-      });
-    this.token = res.body.data.token;
+    self.token = await adminLogin();
   });
   describe('POST /trips', () => {
     it('should create a trip successfully', mochaAsyncHelper(async () => {
@@ -59,6 +55,29 @@ describe('Trip', function () {
         ...record,
         trip_date: new Date(record.trip_date).toISOString(),
       })));
+    }));
+  });
+  describe('PATCH /trips/:tripId', function () {
+    const input = {
+      bus_id: 1,
+      origin: 'lagos',
+      destination: 'ibadan',
+      trip_date: new Date(2019, 11, 21).toISOString(),
+      fare: 2000.00,
+    };
+    it('should cancel trip successfully', mochaAsyncHelper(async function () {
+      let res = await chai.request(server)
+        .post('/api/v1/trips/')
+        .set('authorization', self.token)
+        .send(input);
+      res.should.have.status(201);
+      const trip_id = res.body.data.id
+      res = await chai.request(server)
+        .patch(`/api/v1/trips/${trip_id}`)
+        .set('authorization', self.token);
+      res.should.have.status(200);
+      res.body.should.have.property('id', trip_id);
+      res.body.should.have.property('status', 'cancelled');
     }));
   });
 });

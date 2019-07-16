@@ -27,4 +27,13 @@ export default class TripController {
         data: records,
       });
   }
+
+  static async cancel(req, res) {
+    const {
+      tripId,
+    } = req.params;
+    const record = await Trip.update(tripId, 'status', 'cancelled');
+    return res.status(200)
+      .json(record);
+  }
 }

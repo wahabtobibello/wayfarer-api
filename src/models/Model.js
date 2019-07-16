@@ -26,9 +26,31 @@ export default (table, fields) => class Model {
     return rows[0];
   }
 
-  static async findAll() {
-    const { rows } = await db.query(`SELECT * from "${table}"`);
+  static async findAll(field = null, value = null) {
+    const values = [];
+    if (value) {
+      values.push(value);
+    }
+    const { rows } = await db.query(
+      `SELECT * from "${table}" ${field && value
+        ? `WHERE ${field} = $1`
+        : ''}`, values,
+    );
     return rows;
+  }
+
+  static async update(id, field, value) {
+    const { rows } = await db.query(
+      `UPDATE "${table}" SET ${field} = $1 WHERE id = $2 RETURNING *`, [value, id],
+    );
+    return rows[0];
+  }
+
+  static async delete(id) {
+    const { rows } = await db.query(
+      `DELETE from "${table}" WHERE id = $1 RETURNING *`, [id],
+    );
+    return rows[0];
   }
 
   // static async count() {
