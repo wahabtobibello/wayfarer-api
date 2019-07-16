@@ -39,6 +39,13 @@ export default (table, fields) => class Model {
     return rows;
   }
 
+  static async update(id, field, value) {
+    const { rows } = await db.query(
+      `UPDATE "${table}" SET ${field} = $1 WHERE id = $2 RETURNING *`, [value, id],
+    );
+    return rows[0];
+  }
+
   static async delete(id) {
     const { rows } = await db.query(
       `DELETE from "${table}" WHERE id = $1 RETURNING *`, [id],
