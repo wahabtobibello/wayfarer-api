@@ -52,3 +52,8 @@ VALUES ('BA.987PA', 'Toyota', 'HiAce', '2016', 12),
 ('AF.434ER', 'Toyota', 'Hummer', '2014', 12),
 ('EF.952HW', 'Toyota', 'HiAce', '2012', 16),
 ('QG.582HQ', 'Toyota', 'Hummer', '2010', 16);
+
+INSERT INTO "trip" (bus_id, origin, destination, trip_date, fare)
+VALUES (1, 'Lagos', 'Ibadan', '2019-12-21T00:00:00.000Z', 1200.00),
+       (2, 'Port Harcourt', 'Jos', '2019-12-28T00:00:00.000Z', 1600.00),
+       (3, 'Abuja', 'Lafia', '2019-12-14T00:00:00.000Z', 2400.00);
