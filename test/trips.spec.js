@@ -9,8 +9,9 @@ chai.use(chaiHttp);
 chai.should();
 
 describe('Trip', function () {
+  const self = this;
   before(async () => {
-    this.token = await adminLogin();
+    self.token = await adminLogin();
   });
   describe('POST /trips', () => {
     it('should create a trip successfully', mochaAsyncHelper(async () => {
@@ -57,6 +58,26 @@ describe('Trip', function () {
     }));
   });
   describe('PATCH /trips/:tripId', function () {
-
+    const input = {
+      bus_id: 1,
+      origin: 'lagos',
+      destination: 'ibadan',
+      trip_date: new Date(2019, 11, 21).toISOString(),
+      fare: 2000.00,
+    };
+    it('should cancel trip successfully', mochaAsyncHelper(async function () {
+      let res = await chai.request(server)
+        .post('/api/v1/trips/')
+        .set('authorization', self.token)
+        .send(input);
+      res.should.have.status(201);
+      const trip_id = res.body.data.id
+      res = await chai.request(server)
+        .patch(`/api/v1/trips/${trip_id}`)
+        .set('authorization', self.token);
+      res.should.have.status(200);
+      res.body.should.have.property('id', trip_id);
+      res.body.should.have.property('status', 'cancelled');
+    }));
   });
 });
