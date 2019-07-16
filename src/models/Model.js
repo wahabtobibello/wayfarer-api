@@ -26,9 +26,24 @@ export default (table, fields) => class Model {
     return rows[0];
   }
 
-  static async findAll() {
-    const { rows } = await db.query(`SELECT * from "${table}" WHERE is_deleted != TRUE`);
+  static async findAll(field = null, value = null) {
+    const values = [];
+    if (value) {
+      values.push(value);
+    }
+    const { rows } = await db.query(
+      `SELECT * from "${table}" WHERE is_deleted != TRUE${field && value
+        ? ` AND ${field} = $1`
+        : ''}`, values,
+    );
     return rows;
+  }
+
+  static async delete(id) {
+    const { rows } = await db.query(
+      `DELETE from "${table}" WHERE id = $1 RETURNING *`, [id],
+    );
+    return rows[0];
   }
 
   // static async count() {

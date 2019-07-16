@@ -19,12 +19,27 @@ export default class TripController {
   }
 
   static async fetch(req, res) {
-    return res.status(501)
-      .json({});
+    const { user } = req.data;
+    const { is_admin, user_id } = user;
+    let records;
+    if (is_admin) {
+      records = await Booking.findAll();
+    } else {
+      records = await Booking.findAll('user_id', user_id);
+    }
+    return res.status(200)
+      .json({
+        status: 'success',
+        data: records,
+      });
   }
 
   static async delete(req, res) {
-    return res.status(501)
-      .json({});
+    const {
+      bookingId,
+    } = req.params;
+    const record = await Booking.delete(bookingId);
+    return res.status(200)
+      .json(record);
   }
 }
