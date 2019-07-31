@@ -4,7 +4,7 @@ services:
   - postgresql
 env:
   global:
-    - CC_TEST_REPORTER_ID=5306536ea102f8069b6c6ad48d58798212207c6e6dc228ec66f6311fb8420d4e
+    - CC_TEST_REPORTER_ID=38dbcc770fbe1eaba4bea068ac28dfee0ea44c4faf87cc1dd9fbba3ee6381a2e
     - DATABASE_URL=postgres://postgres@localhost:5432/wayfarer_db
     - JWT_SECRET=ac9ca94cay9a3cnac3llo4ob49895cglbwlooqboavai3ab39b3a
 before_script:
