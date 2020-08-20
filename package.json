@@ -12,7 +12,7 @@
     "test:watch": "mocha --require @babel/polyfill --require @babel/register --watch --recursive"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "core-js": "^2.6.9",
     "debug": "~2.6.9",
